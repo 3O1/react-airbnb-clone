@@ -6,8 +6,32 @@ import {
   UsersIcon,
   SearchIcon,
 } from '@heroicons/react/solid';
+import { useState } from 'react';
+
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRangePicker } from 'react-date-range';
 
 function Header() {
+  /** Have to tell React to update the value */
+  const [searchInput, setSearchInput] = useState('');
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [guestNumber, setGuestNumber] = useState('1');
+
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: 'selection',
+  };
+
+  const handleSelect = (ranges) => {
+    setStartDate(ranges.selection.startDate);
+    setEndDate(ranges.selection.endDate);
+  };
+
   /** Use header tag for SEO & google */
   return (
     /**
@@ -36,6 +60,8 @@ function Header() {
        */}
       <div className="flex items-center py-2 rounded-full md:border-2 md:shadow-sm">
         <input
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="flex-grow pl-5 text-gray-600 placeholder-gray-400 bg-transparent outline-none text-small"
           type="text"
           placeholder="Start your search"
@@ -55,6 +81,30 @@ function Header() {
           <UserCircleIcon className="h-6 cursor-pointer" />
         </div>
       </div>
+      {searchInput && (
+        <div className="flex flex-col col-span-3 mx-auto mt-4">
+          <DateRangePicker
+            ranges={[selectionRange]}
+            minDate={new Date()}
+            rangeColors={['#fd5b61']}
+            onChange={handleSelect}
+          />
+
+          <div className="flex items-center mb-4 border-b">
+            <h2 className="flex-grow text-xl font-semibold">
+              Number of Guests
+            </h2>
+
+            <UsersIcon className="h-5" />
+            <input
+              value={guestNumber}
+              onChange={(e) => setGuestNumber(e.target.value)}
+              className="w-12 pl-2 text-lg text-red-400 outline-none"
+              type="number"
+            />
+          </div>
+        </div>
+      )}
     </header>
   );
 }
