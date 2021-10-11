@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Banner from '../components/Banner';
 import SmallCard from '../components/SmallCard';
 import MediumCard from '../components/MediumCard';
+import LargeCard from '../components/LargeCard';
 
 /** Represents home / */
 
@@ -28,7 +29,7 @@ export default function Home({ exploreData, liveAnywhereData }) {
            * set the `SmallCard` props to the item
            */}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 -ml-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {exploreData?.map(({ img, distance, location }) => (
               <SmallCard
                 key={img}
@@ -43,12 +44,19 @@ export default function Home({ exploreData, liveAnywhereData }) {
         {/* Live anywhere */}
         <section>
           <h2 className="py-8 text-3xl font-semibold">Live anywhere</h2>
-          <div className="flex space-x-3 overflow-scroll">
+          <div className="flex py-3 space-x-3 overflow-scroll scrollbar-hide">
             {liveAnywhereData?.map(({ img, title }) => (
               <MediumCard key={img} img={img} title={title} />
             ))}
           </div>
         </section>
+
+        <LargeCard
+          img="https://links.papareact.com/4cj"
+          title="The Greatest Outdoors"
+          description="Wishlists curated by Airbnb"
+          buttonText="Get Inspired"
+        />
       </main>
     </div>
   );
