@@ -32,6 +32,11 @@ function Header() {
     setEndDate(ranges.selection.endDate);
   };
 
+  /** Resets searchbar input */
+  const resetInput = () => {
+    setSearchInput('');
+  };
+
   /** Use header tag for SEO & google */
   return (
     /**
@@ -101,7 +106,16 @@ function Header() {
               onChange={(e) => setGuestNumber(e.target.value)}
               className="w-12 pl-2 text-lg text-red-400 outline-none"
               type="number"
+              min={1}
             />
+          </div>
+          <div>
+            <div className="flex ">
+              <button onClick={resetInput} className="flex-grow text-gray-500">
+                Cancel
+              </button>
+              <button className="flex-grow text-red-400">Save</button>
+            </div>
           </div>
         </div>
       )}
