@@ -11,8 +11,9 @@ import { useState } from 'react';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker } from 'react-date-range';
+import { useRouter } from 'next/dist/client/router';
 
-function Header() {
+function Header({ placeholder }) {
   /** Have to tell React to update the value */
   const [searchInput, setSearchInput] = useState('');
 
@@ -20,6 +21,8 @@ function Header() {
   const [endDate, setEndDate] = useState(new Date());
 
   const [guestNumber, setGuestNumber] = useState('1');
+
+  const router = useRouter();
 
   const selectionRange = {
     startDate: startDate,
@@ -35,6 +38,18 @@ function Header() {
   /** Resets searchbar input */
   const resetInput = () => {
     setSearchInput('');
+  };
+
+  const search = () => {
+    router.push({
+      pathname: '/search',
+      query: {
+        location: searchInput,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        guestNumber: guestNumber,
+      },
+    });
   };
 
   /** Use header tag for SEO & google */
@@ -53,6 +68,7 @@ function Header() {
          * to prepare next.js images -> whitelist domains
          */}
         <Image
+          onClick={() => router.push('/')}
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"
           layout="fill"
           objectFit="contain"
@@ -69,7 +85,7 @@ function Header() {
           onChange={(e) => setSearchInput(e.target.value)}
           className="flex-grow pl-5 text-gray-600 placeholder-gray-400 bg-transparent outline-none text-small"
           type="text"
-          placeholder="Start your search"
+          placeholder={placeholder || 'Start your search'}
         />
         <SearchIcon className="hidden h-8 p-1 mx-auto text-white bg-red-400 rounded-full cursor-pointer md:inline-flex md:mx-2" />
       </div>
@@ -114,7 +130,9 @@ function Header() {
               <button onClick={resetInput} className="flex-grow text-gray-500">
                 Cancel
               </button>
-              <button className="flex-grow text-red-400">Save</button>
+              <button onClick={search} className="flex-grow text-red-400">
+                Save
+              </button>
             </div>
           </div>
         </div>
